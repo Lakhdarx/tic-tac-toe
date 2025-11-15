@@ -18,7 +18,7 @@ const Gameboard = function() {
         for (i = 0; i < columns; i++) {
             board[i] = [];
             for (j = 0; j < rows; j++) {
-                board[i][j].clear();             // NEED TO INITIALIZE CLEAR in Cell()
+                board[i][j].clear();             
             }
         }     
     }
@@ -64,4 +64,34 @@ function Cell() {
     return {setValue, getValue, clear};
 }
 
+const gameController = function(){
+    const playerOne = Player('Lakhdar', 'X');
+    const playerTwo = Player('Andrej', 'O');
+    let activePlayer  = Math.random() < 0.5 ? playerOne : playerTwo;
 
+    function checkWin() {
+        
+    }
+
+    function checkTie() {
+
+    }
+
+    function getActivePlayer() {
+        return activePlayer;
+    }
+
+    function switchPlayer() {
+        activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
+    }
+
+    function playTurn(col, row) {
+        Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
+        checkWin();
+        checkTie();
+        switchPlayer();
+    }
+
+    return {checkWin, checkTie, getActivePlayer, switchPlayer};
+
+}();
