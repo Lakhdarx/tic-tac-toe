@@ -1,6 +1,8 @@
+const columns = 3;
+const rows = 3;
+
+
 const Gameboard = function() {
-    const columns = 3;
-    const rows = 3;
     let board = [];
 
     for (i = 0; i < columns; i++) {
@@ -70,6 +72,27 @@ const gameController = function(){
     let activePlayer  = Math.random() < 0.5 ? playerOne : playerTwo;
 
     function checkWin() {
+        const board = Gameboard.getBoard();
+        for (i = 0; i < columns; i++) {
+            if (
+                board[i][0] !== '' &&
+                board[i][0] === board[i][1] &&
+                board[i][0] === board[i][2]
+            ) 
+            {
+                return true;
+            }   
+            if (
+                board[0][i] !== '' &&
+                board[0][i] === board[1][i] &&
+                board[0][i] === board[2][i] 
+            )
+            {
+                return true;
+            }
+
+        }
+        return false;
         
     }
 
@@ -87,11 +110,11 @@ const gameController = function(){
 
     function playTurn(col, row) {
         Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
-        checkWin();
+        if checkWin() ;
         checkTie();
         switchPlayer();
     }
 
-    return {checkWin, checkTie, getActivePlayer, switchPlayer};
+    return {checkWin, checkTie, getActivePlayer, switchPlayer, playTurn};
 
 }();
