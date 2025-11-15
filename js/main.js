@@ -34,7 +34,19 @@ const Gameboard = function() {
         }
     }
 
-    return {getBoard, resetBoard, placeMarker};
+    function isBoardFull() {
+        for (i = 0; i < columns; i++) {
+            board[i] = [];
+            for (j = 0; j < rows; j++) {
+                if (board[i][j] === '') {
+                    return false;
+                } 
+            }
+        }
+        return true;
+    }
+
+    return {getBoard, resetBoard, placeMarker, isBoardFull};
 
 }();
 
@@ -97,7 +109,10 @@ const gameController = function(){
     }
 
     function checkTie() {
-
+        if (Gameboard.isBoardFull()) {
+            return true;
+        }
+        else return false;
     }
 
     function getActivePlayer() {
@@ -110,7 +125,7 @@ const gameController = function(){
 
     function playTurn(col, row) {
         Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
-        if checkWin() ;
+        checkWin();
         checkTie();
         switchPlayer();
     }
