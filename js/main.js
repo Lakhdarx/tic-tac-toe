@@ -26,7 +26,7 @@ const Gameboard = function() {
     }
 
     function placeMarker(marker, cell) {
-        if (cell.getValue === '') {
+        if (cell.getValue() === '') {
            cell.setValue(marker); 
         }
         else {
@@ -125,8 +125,15 @@ const gameController = function(){
 
     function playTurn(col, row) {
         Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
-        checkWin();
-        checkTie();
+        console.log(Gameboard.getBoard);
+        if (checkWin()) {
+            console.log(`${gameController.getActivePlayer().name} has won the game`);
+        }
+        else if (checkTie()) {
+            console.log(`Tie`);
+            return;
+        }
+        
         switchPlayer();
     }
 
