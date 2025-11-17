@@ -18,7 +18,6 @@ const Gameboard = function() {
 
     function resetBoard() {
         for (i = 0; i < columns; i++) {
-            board[i] = [];
             for (j = 0; j < rows; j++) {
                 board[i][j].clear();             
             }
@@ -26,7 +25,7 @@ const Gameboard = function() {
     }
 
     function placeMarker(marker, cell) {
-        if (cell.getValue() === '') {
+        if (cell.getValue() === '#') {
            cell.setValue(marker); 
         }
         else {
@@ -36,9 +35,8 @@ const Gameboard = function() {
 
     function isBoardFull() {
         for (i = 0; i < columns; i++) {
-            board[i] = [];
             for (j = 0; j < rows; j++) {
-                if (board[i][j] === '') {
+                if (board[i][j].getValue() === '#') {
                     return false;
                 } 
             }
@@ -46,7 +44,13 @@ const Gameboard = function() {
         return true;
     }
 
-    return {getBoard, resetBoard, placeMarker, isBoardFull};
+    function printBoard() { 
+        for (i = 0; i < columns; i++) {
+            console.log(`${board[0][i].getValue()} | ${board[1][i].getValue()} | ${board[2][i].getValue()}`);
+        }       
+    }
+
+    return {getBoard, resetBoard, placeMarker, isBoardFull, printBoard};
 
 }();
 
@@ -61,7 +65,7 @@ function Player(name, marker) {
 
 
 function Cell() {
-    let value = '';
+    let value = '#';
 
     function setValue(marker) {
         value = marker;
@@ -72,7 +76,7 @@ function Cell() {
     }
 
     function clear() {
-        value = '';
+        value = '#';
     }
 
     return {setValue, getValue, clear};
@@ -87,21 +91,30 @@ const gameController = function(){
         const board = Gameboard.getBoard();
         for (i = 0; i < columns; i++) {
             if (
-                board[i][0] !== '' &&
-                board[i][0] === board[i][1] &&
-                board[i][0] === board[i][2]
+                board[i][0].getValue() !== '#' &&
+                board[i][0].getValue() === board[i][1].getValue() &&
+                board[i][0].getValue() === board[i][2].getValue()
             ) 
             {
                 return true;
             }   
             if (
-                board[0][i] !== '' &&
-                board[0][i] === board[1][i] &&
-                board[0][i] === board[2][i] 
+                board[0][i].getValue() !== '#' &&
+                board[0][i].getValue() === board[1][i].getValue() &&
+                board[0][i].getValue() === board[2][i].getValue() 
             )
             {
                 return true;
             }
+            // DIAGONAL WINNING 3s
+            if (
+                board[0][0].getValue() !== '#' &&
+                board[0][0].getValue() === board[1][1].getValue() &&
+                board[0][0].getValue() === board[2][2].getValue() 
+            )
+            {
+                return true;
+            }      
 
         }
         return false;
@@ -125,12 +138,16 @@ const gameController = function(){
 
     function playTurn(col, row) {
         Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
-        console.log(Gameboard.getBoard);
+        Gameboard.printBoard();
         if (checkWin()) {
             console.log(`${gameController.getActivePlayer().name} has won the game`);
+            Gameboard.resetBoard();
+
+            return;
         }
         else if (checkTie()) {
             console.log(`Tie`);
+            Gameboard.resetBoard();
             return;
         }
         
