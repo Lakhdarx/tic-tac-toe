@@ -114,7 +114,16 @@ const gameController = function(){
             )
             {
                 return true;
-            }      
+            }    
+            
+            if (
+                board[2][0].getValue() !== '#' &&
+                board[2][0].getValue() === board[1][1].getValue() &&
+                board[2][0].getValue() === board[0][2].getValue() 
+            )
+            {
+                return true;
+            }
 
         }
         return false;
@@ -136,18 +145,19 @@ const gameController = function(){
         activePlayer = activePlayer === playerOne ? playerTwo : playerOne;
     }
 
-    function playTurn(col, row) {
+    function playTurn(col, row, e) {
         Gameboard.placeMarker(getActivePlayer().marker, Gameboard.getBoard()[col][row]);
         Gameboard.printBoard();
+        e.target.textContent = gameController.getActivePlayer().marker 
         if (checkWin()) {
             console.log(`${gameController.getActivePlayer().name} has won the game`);
             displayController.displayWinner();
-            return;
+            
         }
         else if (checkTie()) {
             console.log(`Tie`);
             displayController.displayTie();
-            return;
+            
         }
         
         switchPlayer();
@@ -168,14 +178,14 @@ const displayController = function() {
     function renderBoard() {
         cells.forEach(cell => {
             cell.addEventListener('click', (e) => {
-                gameController.playTurn(e.target.dataset.col, e.target.dataset.row);
+                gameController.playTurn(e.target.dataset.col, e.target.dataset.row, e);
 
-                if (gameController.checkWin()) {
-                    e.target.textContent = gameController.getActivePlayer().marker;
-                }
-                else {
-                    e.target.textContent = gameController.getActivePlayer().marker === 'O' ? 'X' : 'O';
-                }
+                // if (gameController.checkWin()) {
+                //     e.target.textContent = gameController.getActivePlayer().marker;
+                // }
+                // else {
+                //     e.target.textContent = gameController.getActivePlayer().marker === 'O' ? 'X' : 'O';
+                // }
             })
         });
     }
