@@ -15,12 +15,8 @@ body {
 }
 
 
-.settings { 
-    /* outline: 1px solid white; */
-}
 
 .board {
-    /* border: 1px solid white; */
     width: 300px;
     height: fit-content;
     margin-top: 50px;
@@ -45,3 +41,8 @@ h2 {
     display: flex;
 }
 
+output {
+    margin-top: 50px;
+    color: white;
+    font-size: 1.8rem;
+}

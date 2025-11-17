@@ -141,12 +141,12 @@ const gameController = function(){
         Gameboard.printBoard();
         if (checkWin()) {
             console.log(`${gameController.getActivePlayer().name} has won the game`);
-            Gameboard.resetBoard();
+            displayController.displayWinner();
             return;
         }
         else if (checkTie()) {
             console.log(`Tie`);
-            Gameboard.resetBoard();
+            displayController.displayTie();
             return;
         }
         
@@ -156,3 +156,54 @@ const gameController = function(){
     return {checkWin, checkTie, getActivePlayer, switchPlayer, playTurn};
 
 }();
+
+
+const restartBtn = document.querySelector("#restart");
+const cells = document.querySelectorAll(".cell");
+const output = document.querySelector("output");
+
+const displayController = function() {
+    
+     
+    function renderBoard() {
+        cells.forEach(cell => {
+            cell.addEventListener('click', (e) => {
+                gameController.playTurn(e.target.dataset.col, e.target.dataset.row);
+
+                if (gameController.checkWin()) {
+                    e.target.textContent = gameController.getActivePlayer().marker;
+                }
+                else {
+                    e.target.textContent = gameController.getActivePlayer().marker === 'O' ? 'X' : 'O';
+                }
+            })
+        });
+    }
+
+    function displayWinner() {
+        output.textContent = `${gameController.getActivePlayer().name} has won the game`;
+    }
+    
+    function displayTie() {
+        output.textContent = 'Tie';
+    }
+
+    function resetOutput() {
+        output.textContent = '';
+    }
+
+
+    function clearBoard() {
+        forEach(cell => cell.textContent = '');
+    }
+
+    restartBtn.addEventListener('click', () => {
+        Gameboard.resetBoard();
+        clearBoard();
+    });
+
+    return {clearBoard, renderBoard, resetOutput, displayWinner, displayTie};
+
+}();
+
+displayController.renderBoard();
