@@ -83,8 +83,8 @@ function Cell() {
 }
 
 const gameController = function(){
-    const playerOne = Player('Lakhdar', 'X');
-    const playerTwo = Player('Andrej', 'O');
+    const playerOne = Player('Player1', 'X');
+    const playerTwo = Player('Player2', 'O');
     let activePlayer  = Math.random() < 0.5 ? playerOne : playerTwo;
 
     function checkWin() {
@@ -142,7 +142,6 @@ const gameController = function(){
         if (checkWin()) {
             console.log(`${gameController.getActivePlayer().name} has won the game`);
             Gameboard.resetBoard();
-
             return;
         }
         else if (checkTie()) {
