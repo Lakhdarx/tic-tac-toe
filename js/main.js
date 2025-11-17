@@ -179,13 +179,6 @@ const displayController = function() {
         cells.forEach(cell => {
             cell.addEventListener('click', (e) => {
                 gameController.playTurn(e.target.dataset.col, e.target.dataset.row, e);
-
-                // if (gameController.checkWin()) {
-                //     e.target.textContent = gameController.getActivePlayer().marker;
-                // }
-                // else {
-                //     e.target.textContent = gameController.getActivePlayer().marker === 'O' ? 'X' : 'O';
-                // }
             })
         });
     }
@@ -204,12 +197,13 @@ const displayController = function() {
 
 
     function clearBoard() {
-        forEach(cell => cell.textContent = '');
+        cells.forEach(cell => cell.textContent = '');
     }
 
     restartBtn.addEventListener('click', () => {
         Gameboard.resetBoard();
         clearBoard();
+        resetOutput();
     });
 
     return {clearBoard, renderBoard, resetOutput, displayWinner, displayTie};
